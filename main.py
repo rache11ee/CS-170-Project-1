@@ -1,6 +1,8 @@
 from uniform_cost_search import uniform_cost_search
 from puzzle import total_path
 from misplaced_heuristic import a_star_misplaced_heuristic
+from manhattan_heuristic import a_star_manhattan_heuristic
+import time
 
 def print_state(state): 
     for i in range(0,9,3):
@@ -20,10 +22,17 @@ else:
 
 print("write 1 to use a* misplaced heuristic, 2 to use a* manhattan heuristic, or 3 to use uniform cost search")
 algorithm = int(input())
+
+start_time = time.process_time()
+
 if algorithm == 1:
     solution_node = a_star_misplaced_heuristic(initial_state)
+elif algorithm == 2:
+    solution_node = a_star_manhattan_heuristic(initial_state)
 elif algorithm == 3:
     solution_node = uniform_cost_search(initial_state)
+
+end_time = time.process_time()
     
 
 if solution_node:
@@ -31,6 +40,7 @@ if solution_node:
     for state in path: #will print all of the states that it takes to get to the goal state
         print_state(state)
         print("\n")
+    print(f"Solved in {end_time - start_time:.6f} seconds!")
 else:
     print("No solution found!")
 
