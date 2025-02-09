@@ -23,24 +23,33 @@ else:
 print("write 1 to use a* misplaced heuristic, 2 to use a* manhattan heuristic, or 3 to use uniform cost search")
 algorithm = int(input())
 
-start_time = time.process_time()
+start_time = time.time()
 
 if algorithm == 1:
-    solution_node = a_star_misplaced_heuristic(initial_state)
+    solution_node, max_queue_size, nodes_expanded = a_star_misplaced_heuristic(initial_state)
 elif algorithm == 2:
-    solution_node = a_star_manhattan_heuristic(initial_state)
+    solution_node, max_queue_size, nodes_expanded = a_star_manhattan_heuristic(initial_state)
 elif algorithm == 3:
-    solution_node = uniform_cost_search(initial_state)
+    solution_node, max_queue_size, nodes_expanded = uniform_cost_search(initial_state)
 
-end_time = time.process_time()
+end_time = time.time()
     
 
 if solution_node:
-    path = total_path(solution_node)
-    for state in path: #will print all of the states that it takes to get to the goal state
-        print_state(state)
-        print("\n")
+    path, heuristics, costs = total_path(solution_node)
+    for state, heuristic, cost in zip(path, heuristics, costs): #will print all of the states that it takes to get to the goal state
+        if state == initial_state:
+            print("Initial state: ")
+            print_state(state)
+            print("\n")
+        else:
+            print(f"The best state to expand with g(n): {cost} and h(n): {heuristic} is...")
+            print_state(state)
+            print("\n")
     print(f"Solved in {end_time - start_time:.6f} seconds!")
+    print(f"Solution depth was {len(path)}")
+    print(f"Max queue size: {nodes_expanded}")
+    print(f"Number of nodes expanded: {max_queue_size}")
 else:
     print("No solution found!")
 

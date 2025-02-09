@@ -29,15 +29,19 @@ def get_children(node):
         new_index = new_row * 3 + new_col
         new_state = node.state[:] #copies over old state to new state
         new_state[empty_index], new_state[new_index] = new_state[new_index], new_state[empty_index]
-        children.append(Node(new_state,node,(dir_of_x,dir_of_y),0,node.cost + 1))
+        children.append(Node(new_state,node,(dir_of_x,dir_of_y),0,node.goal_cost + 1, 0))
         
     return children
 
 def total_path(node):
     path = []
+    heuristics, costs = [], []
     while node:
         path.append(node.state)
         node = node.parent
-    return path[::-1] #will return from the initial node down to the goal state node
+        if node:
+            heuristics.append(node.heuristic)
+            costs.append(node.goal_cost)
+    return path[::-1], heuristics[::-1], costs[::-1] #will return from the initial node down to the goal state node
 
         
